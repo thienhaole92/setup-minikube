@@ -64,3 +64,20 @@ terraform -chdir=./local/terraform/postgres init -var="host=127.0.0.1" -var="por
 
 terraform -chdir=./local/terraform/postgres apply --auto-approve -var="host=127.0.0.1" -var="port=60700" -var="user=postgres" -var="password=password"
 ```
+
+7. [Enabling insecure registries](https://minikube.sigs.k8s.io/docs/handbook/registry/)
+
+Configuring minikube and docker on macOS, enabling docker to push images to minikube's registry
+
+```sh
+minikube addons enable registry
+```
+
+When enabled, the registry addon exposes its port 5000 on the minikube’s virtual machine.
+
+In order to make docker accept pushing images to this registry, we have to redirect port 5000 on the docker virtual machine over to port 5000 on the minikube machine
+
+```sh
+docker run --rm -it --network=host alpine ash -c "apk add socat && socat TCP-LISTEN:5000,reuseaddr,fork TCP:$(minikube ip):5000"
+
+```
