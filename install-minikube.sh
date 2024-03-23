@@ -74,8 +74,8 @@ remove() {
 
 deploy_argocd() {
     echo "Attempting to deploy ArgoCD on Minikube"
-    terraform -chdir=./local/terraform init
-    terraform -chdir=./local/terraform apply --auto-approve
+    terraform -chdir=./local/terraform/argocd init
+    terraform -chdir=./local/terraform/argocd apply --auto-approve
 }
 
 get_argocd_admin_password() {
