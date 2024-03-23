@@ -30,6 +30,14 @@ install() {
         echo "minikube is already installed - $(minikube version)"
     fi
 
+    # check if terraform is installed
+    if command terraform >/dev/null 2>&1; then
+        echo "Installing terraform"
+        brew install terraform
+    else
+        echo "terraform is already installed - $(terraform version)"
+    fi
+
     # check if docker is running
     if ! docker info >/dev/null 2>&1; then
         echo "Docker isn't running, starting up Docker"
@@ -51,6 +59,9 @@ install() {
         echo "minikube is up and run"
     fi
 
+    deploy_argocd
+    get_argocd_admin_password
+
 }
 
 remove() {
@@ -59,6 +70,17 @@ remove() {
     brew uninstall minikube
     brew uninstall kubectl
     brew uninstall --cask docker
+}
+
+deploy_argocd() {
+    echo "Attempting to deploy ArgoCD on Minikube"
+    terraform -chdir=./local/terraform init
+    terraform -chdir=./local/terraform apply --auto-approve
+}
+
+get_argocd_admin_password() {
+    kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+    echo
 }
 
 case $CMD in

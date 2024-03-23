@@ -15,3 +15,11 @@ chmod +x install-minikube.sh
 ```sh
 ./install-minikube.sh
 ```
+
+3. Access ArgoCD web UI
+
+To access the ArgoCD web UI, you'll need to port forward to the argocd-server service
+
+```sh
+kubectl port-forward svc/argocd-server -n argocd 8080:80
+```
