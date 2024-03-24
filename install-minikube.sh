@@ -38,6 +38,14 @@ install() {
         echo "terraform is already installed - $(terraform version)"
     fi
 
+    # check if helm is installed
+    if command helm >/dev/null 2>&1; then
+        echo "Installing helm"
+        brew install helm
+    else
+        echo "helm is already installed - $(helm version)"
+    fi
+
     # check if docker is running
     if ! docker info >/dev/null 2>&1; then
         echo "Docker isn't running, starting up Docker"

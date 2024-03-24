@@ -79,5 +79,16 @@ In order to make docker accept pushing images to this registry, we have to redir
 
 ```sh
 docker run --rm -it --network=host alpine ash -c "apk add socat && socat TCP-LISTEN:5000,reuseaddr,fork TCP:$(minikube ip):5000"
+```
 
+8. [Enabling helm-tiller](https://minikube.sigs.k8s.io/docs/handbook/addons/helm-tiller/)
+
+```sh
+minikube addons enable helm-tiller
+```
+
+9. Deploying a test app
+
+```sh
+kubectl apply -f ./deployment/golang-k8s-argocd-app.yaml
 ```
