@@ -4,4 +4,9 @@ global:
 
 server:
   extraArgs:
-  - --insecure
+    - --insecure
+
+configs:
+  cm:
+    exec.enabled: true
+    exec.shells: sh
